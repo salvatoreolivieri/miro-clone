@@ -6,38 +6,46 @@ type NotificationType =
   | "boardDeleted"
   | "linkCopied"
 
+type NotificationMessages = {
+  [key in NotificationType]: {
+    success: string
+    error: string
+  }
+}
+
+const notificationMessages: NotificationMessages = {
+  boardCreated: {
+    success: "Board created",
+    error: "Failed to create board",
+  },
+  boardRenamed: {
+    success: "Board renamed",
+    error: "Failed to rename board",
+  },
+  boardDeleted: {
+    success: "Board deleted",
+    error: "Failed to delete board",
+  },
+  linkCopied: {
+    success: "Link copied",
+    error: "Failed to copy link",
+  },
+}
+
 export const useNotifications = () => {
-  const addNotificationSuccess = (type: NotificationType) => {
-    switch (type) {
-      case "boardCreated":
-        return toast.success("Board created")
+  const addNotification = (type: NotificationType, isSuccess: boolean) => {
+    const messageType = isSuccess ? "success" : "error"
 
-      case "boardRenamed":
-        return toast.error("Board renamed")
+    const message = notificationMessages[type][messageType]
 
-      case "boardRenamed":
-        return toast.success("Board deleted")
-
-      case "linkCopied":
-        return toast.success("Link copied")
-    }
+    toast[messageType](message)
   }
 
-  const addNotificationError = (type: NotificationType) => {
-    switch (type) {
-      case "boardCreated":
-        return toast.error("Failed to create board")
+  const addNotificationSuccess = (type: NotificationType) =>
+    addNotification(type, true)
 
-      case "boardRenamed":
-        return toast.error("Failed to rename board")
-
-      case "boardDeleted":
-        return toast.error("Failed to delete board")
-
-      case "linkCopied":
-        return toast.error("Failed to copy link")
-    }
-  }
+  const addNotificationError = (type: NotificationType) =>
+    addNotification(type, false)
 
   return { addNotificationSuccess, addNotificationError }
 }
