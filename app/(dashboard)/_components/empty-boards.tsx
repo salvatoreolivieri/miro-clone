@@ -2,9 +2,10 @@
 
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
+import { useBoardMutation } from "@/hooks/use-board-mutation"
 
 export const EmptyBoards = () => {
-  // Add some functions here...
+  const { createNewBoard, pendingState } = useBoardMutation()
 
   return (
     <>
@@ -20,7 +21,9 @@ export const EmptyBoards = () => {
         </p>
 
         <div className="mt-6">
-          <Button size="lg">Create board</Button>
+          <Button disabled={pendingState} onClick={createNewBoard} size="lg">
+            Create board
+          </Button>
         </div>
       </div>
     </>
