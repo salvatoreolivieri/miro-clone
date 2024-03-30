@@ -11,11 +11,11 @@ export const List = () => {
     },
   })
 
-  if (!userMemberships.data.length) return null
+  if (!userMemberships.data?.length) return null
 
   return (
     <>
-      <div>
+      <ul className="space-y-4">
         {userMemberships.data.map(({ organization }) => (
           <Item
             id={organization.id}
@@ -24,7 +24,7 @@ export const List = () => {
             key={organization.id}
           />
         ))}
-      </div>
+      </ul>
     </>
   )
 }

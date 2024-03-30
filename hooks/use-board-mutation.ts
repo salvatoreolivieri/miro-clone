@@ -24,7 +24,7 @@ export const useBoardMutation = () => {
     const NOTIFICATION_TYPE = "boardCreated"
 
     mutate({
-      orgId: "",
+      orgId: organization?.id,
       title: "untitled",
     })
       .then(() => addNotificationSuccess(NOTIFICATION_TYPE))

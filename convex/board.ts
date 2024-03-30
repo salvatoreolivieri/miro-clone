@@ -15,7 +15,7 @@ const images = [
   "/placeholders/10.svg",
 ]
 
-const getIdentity = async (ctx: any) => {
+export const getIdentity = async (ctx: any) => {
   const identity = await ctx.auth.getUserIdentity()
 
   if (!identity) throw new Error("Not authenticated")
