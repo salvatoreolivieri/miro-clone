@@ -10,16 +10,16 @@ interface NewBoardButtonProps {
 }
 
 export const NewBoardButton = ({ disabled }: NewBoardButtonProps) => {
-  const { createNewBoard, pendingState } = useBoardMutation()
+  const { createNewBoard, createPendingState } = useBoardMutation()
 
   return (
     <>
       <button
-        disabled={pendingState || disabled}
+        disabled={createPendingState || disabled}
         onClick={createNewBoard}
         className={cn(
           "col-span-1 aspect-[100/127] bg-blue-600 rounded-lg hover:bg-blue-800 flex flex-col items-center justify-center py-6",
-          (pendingState || disabled) &&
+          (createPendingState || disabled) &&
             "opacity-75 hover:bg-blue-600 cursor-not-allowed"
         )}
       >

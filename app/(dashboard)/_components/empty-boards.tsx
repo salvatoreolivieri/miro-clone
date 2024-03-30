@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { useBoardMutation } from "@/hooks/use-board-mutation"
 
 export const EmptyBoards = () => {
-  const { createNewBoard, pendingState } = useBoardMutation()
+  const { createNewBoard, createPendingState } = useBoardMutation()
 
   return (
     <>
@@ -21,7 +21,11 @@ export const EmptyBoards = () => {
         </p>
 
         <div className="mt-6">
-          <Button disabled={pendingState} onClick={createNewBoard} size="lg">
+          <Button
+            disabled={createPendingState}
+            onClick={createNewBoard}
+            size="lg"
+          >
             Create board
           </Button>
         </div>
