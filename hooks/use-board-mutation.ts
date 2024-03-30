@@ -23,6 +23,11 @@ export const useBoardMutation = () => {
   const { mutate: rename, pending: renamePendingState } = useApiMutation(
     api.board.update
   )
+  const { mutate: onFavorite, pending: favoritePendingState } = useApiMutation(
+    api.board.favorite
+  )
+  const { mutate: onUnfavorite, pending: unfavoritePendingState } =
+    useApiMutation(api.board.unfavorite)
 
   // Functions:
   const createNewBoard = () => {
@@ -63,6 +68,15 @@ export const useBoardMutation = () => {
       .catch(() => addNotificationError(NOTIFICATION_TYPE))
   }
 
+  const toggleFavorite = (id: string, favoriteState: boolean) =>
+    favoriteState
+      ? onUnfavorite({ id })
+          .then(() => addNotificationSuccess("unfavorite"))
+          .catch(() => addNotificationError("unfavorite"))
+      : onFavorite({ id, orgId: organization?.id })
+          .then(() => addNotificationSuccess("favorite"))
+          .catch(() => addNotificationError("favorite"))
+
   return {
     // Create
     createNewBoard,
@@ -75,5 +89,10 @@ export const useBoardMutation = () => {
     // Rename
     renameBoard,
     renamePendingState,
+
+    // Favorite
+    toggleFavorite,
+    favoritePendingState,
+    unfavoritePendingState,
   }
 }

@@ -10,7 +10,7 @@ export const get = query({
     // favorites: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
-    await getIdentity(ctx)
+    const { userId } = await getIdentity(ctx)
 
     const boards = await ctx.db
       .query("boards")
@@ -18,6 +18,21 @@ export const get = query({
       .order("desc")
       .collect()
 
-    return boards
+    const boardsWithFavoritesRelation = boards.map((board) =>
+      ctx.db
+        .query("userFavorites")
+        .withIndex("by_user_board", (q) =>
+          q.eq("userId", userId).eq("boardId", board._id)
+        )
+        .unique()
+        .then((favorite) => ({
+          ...board,
+          isFavorite: !!favorite,
+        }))
+    )
+
+    const boardWithFavoriteBoolean = Promise.all(boardsWithFavoritesRelation)
+
+    return boardWithFavoriteBoolean
   },
 })

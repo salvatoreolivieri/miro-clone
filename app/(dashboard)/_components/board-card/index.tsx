@@ -11,6 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Actions } from "@/components/actions"
 
 import { Footer } from "./footer"
+import { useBoardMutation } from "@/hooks/use-board-mutation"
 
 interface BoardCardProps {
   id: string
@@ -34,9 +35,13 @@ export const BoardCard = ({
   isFavorite,
 }: BoardCardProps) => {
   const { userId } = useAuth()
+  const { toggleFavorite, favoritePendingState, unfavoritePendingState } =
+    useBoardMutation()
 
   const authorLabel = userId === authorId ? "You" : authorName
-  const createdAtLabel = formatDistanceToNow(createdAt)
+  const createdAtLabel = formatDistanceToNow(createdAt, {
+    addSuffix: true,
+  })
 
   return (
     <>
@@ -59,8 +64,8 @@ export const BoardCard = ({
             title={title}
             authorLabel={authorLabel}
             createdAtLabel={createdAtLabel}
-            // onClick={toggleFavorite}
-            // disabled={pendingFavorite || pendingUnfavorite}
+            onClick={() => toggleFavorite(id, isFavorite)}
+            disabled={favoritePendingState || unfavoritePendingState}
           />
         </div>
       </Link>

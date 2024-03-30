@@ -5,6 +5,8 @@ type NotificationType =
   | "boardRenamed"
   | "boardDeleted"
   | "linkCopied"
+  | "favorite"
+  | "unfavorite"
 
 type NotificationMessages = {
   [key in NotificationType]: {
@@ -29,6 +31,14 @@ const notificationMessages: NotificationMessages = {
   linkCopied: {
     success: "Link copied",
     error: "Failed to copy link",
+  },
+  favorite: {
+    success: "Board added to favorite",
+    error: "Failed to favorite",
+  },
+  unfavorite: {
+    success: "Board removed from favorited",
+    error: "Failed to unfavorite",
   },
 }
 
