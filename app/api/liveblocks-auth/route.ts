@@ -33,7 +33,7 @@ export const POST = async (request: Request) => {
 
   // UserInfo and Session:
   const userInfo = {
-    name: user?.firstName || "Anonymous",
+    name: user?.firstName || "Teammate",
     picture: user?.imageUrl,
   }
 
