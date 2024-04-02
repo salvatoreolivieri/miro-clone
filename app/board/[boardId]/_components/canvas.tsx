@@ -4,7 +4,11 @@ import { Info } from "./info"
 import { Participants } from "./participants"
 import { Toolbar } from "./toolbar"
 
-export const Canvas = () => {
+interface CanvasProps {
+  boardId: string
+}
+
+export const Canvas = ({ boardId }: CanvasProps) => {
   // Add some functions here...
 
   return (
