@@ -1,10 +1,17 @@
 import { useApiMutation } from "./use-api-mutation"
+
 import { useNotifications } from "./use-notifications"
 import { api } from "../convex/_generated/api"
 
 import { useOrganization } from "@clerk/nextjs"
+import { useRouter } from "next/navigation"
+import { useSearchParams } from "next/navigation"
 
 export const useBoardMutation = () => {
+  const router = useRouter()
+  const search = useSearchParams()
+  const favorites = search.get("favorites")
+
   const { organization } = useOrganization()
   const { addNotificationSuccess, addNotificationError } = useNotifications()
 
@@ -40,7 +47,17 @@ export const useBoardMutation = () => {
       orgId: organization?.id,
       title: "untitled",
     })
-      .then(() => addNotificationSuccess(NOTIFICATION_TYPE))
+      .then((id) => {
+        addNotificationSuccess(NOTIFICATION_TYPE)
+
+        console.log(favorites)
+
+        if (favorites) {
+          onFavorite({ id, orgId: organization?.id })
+        }
+
+        router.push(`/board/${id}`)
+      })
       .catch(() => addNotificationError(NOTIFICATION_TYPE))
   }
 

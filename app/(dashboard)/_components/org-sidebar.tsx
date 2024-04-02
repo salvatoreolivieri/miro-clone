@@ -56,6 +56,7 @@ export const OrgSidebar = () => {
               Team boards
             </Link>
           </Button>
+
           <Button
             variant={favorites ? "secondary" : "ghost"}
             asChild
