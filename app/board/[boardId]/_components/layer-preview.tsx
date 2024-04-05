@@ -1,8 +1,10 @@
 "use client"
 
-import { useStorage } from "@/liveblocks.config"
 import { memo } from "react"
+
 import { LayerType } from "@/types/canvas"
+import { useStorage } from "@/liveblocks.config"
+
 import { Rectangle } from "./rectangle"
 
 interface LayerPreviewProps {
