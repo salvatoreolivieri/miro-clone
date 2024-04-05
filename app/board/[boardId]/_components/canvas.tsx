@@ -26,6 +26,7 @@ import { CursorsPresence } from "./cursors-presence"
 import { connectionIdToColor, pointerEventToCanvasPoint } from "@/lib/utils"
 import { LiveObject } from "@liveblocks/client"
 import { LayerPreview } from "./layer-preview"
+import { SelectionBox } from "./selection-box"
 
 const MAX_LAYERS = 100
 
@@ -42,9 +43,9 @@ export const Canvas = ({ boardId }: CanvasProps) => {
 
   const [camera, setCamera] = useState<Camera>({ x: 0, y: 0 })
   const [lastUsedColor, setLastUsedColor] = useState<Color>({
-    r: 0,
-    g: 0,
-    b: 0,
+    r: 255,
+    g: 255,
+    b: 255,
   })
 
   const history = useHistory()
@@ -172,6 +173,8 @@ export const Canvas = ({ boardId }: CanvasProps) => {
     [setCanvasState, camera, history, canvasState.mode]
   )
 
+  const onResizeHandlePointerDown = () => {}
+
   return (
     <>
       <main className="h-full w-full relative bg-neutral-100 touch-none">
@@ -208,6 +211,10 @@ export const Canvas = ({ boardId }: CanvasProps) => {
                 selectionColor={layerIdsToColorSelection[layerId]}
               />
             ))}
+
+            <SelectionBox
+              onResizeHandlePointerDown={onResizeHandlePointerDown}
+            />
 
             <CursorsPresence />
           </g>
