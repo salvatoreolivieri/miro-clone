@@ -30,8 +30,50 @@ export const SelectionTools = memo(
     )
 
     const deleteLayer = useDeleteLayers()
-    const moveToFront = () => {}
-    const moveToBack = () => {}
+
+    const moveToFront = useMutation(
+      ({ storage }) => {
+        const liveLayerIds = storage.get("layerIds")
+        const indices = []
+
+        const arr = liveLayerIds.toImmutable()
+
+        for (const [index, layerId] of arr.entries()) {
+          if (selection.includes(layerId)) {
+            indices.push(index)
+          }
+        }
+
+        let newIndex = arr.length - 1
+        for (const index of indices) {
+          liveLayerIds.move(index, newIndex)
+          newIndex--
+        }
+      },
+      [selection]
+    )
+
+    const moveToBack = useMutation(
+      ({ storage }) => {
+        const liveLayerIds = storage.get("layerIds")
+        const indices = []
+
+        const arr = liveLayerIds.toImmutable()
+
+        for (const [index, layerId] of arr.entries()) {
+          if (selection.includes(layerId)) {
+            indices.push(index)
+          }
+        }
+
+        let newIndex = 0
+        for (const index of indices) {
+          liveLayerIds.move(index, newIndex)
+          newIndex++
+        }
+      },
+      [selection]
+    )
 
     const selectionBounds = useSelectionBounds()
 
@@ -51,18 +93,21 @@ export const SelectionTools = memo(
           }}
         >
           <ColorPicker onChange={setFill} />
+
           <div className="flex flex-col gap-y-0.5">
             <Hint label="Bring to front">
               <Button onClick={moveToFront} variant="board" size="icon">
                 <BringToFront />
               </Button>
             </Hint>
+
             <Hint label="Send to back" side="bottom">
               <Button onClick={moveToBack} variant="board" size="icon">
                 <SendToBack />
               </Button>
             </Hint>
           </div>
+
           <div className="flex items-center pl-2 ml-2 border-l border-neutral-200">
             <Hint label="Delete">
               <Button variant="board" size="icon" onClick={deleteLayer}>
