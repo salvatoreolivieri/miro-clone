@@ -70,7 +70,10 @@ export const Canvas = ({ boardId }: CanvasProps) => {
       }
 
       // Check if the pressed key is the delete key (keyCode 46) or backspace key (keyCode 8)
-      if (event.keyCode === 46 || event.keyCode === 8) {
+      if (
+        (event.metaKey || event.ctrlKey) &&
+        (event.keyCode === 46 || event.keyCode === 8)
+      ) {
         // Perform your desired action here, for example, console log
         deleteLayer()
       }
