@@ -1,6 +1,6 @@
 "use client"
 
-import { colorToCss } from "@/lib/utils";
+import { colorToCss } from "@/lib/utils"
 import { RectangleLayer } from "@/types/canvas"
 
 interface RectangleProps {
@@ -21,7 +21,7 @@ export const Rectangle = ({
   return (
     <>
       <rect
-        className="drop-shadow-md"
+        className="drop-shadow-md cursor-grab"
         onPointerDown={(e) => onPointerDown(e, id)}
         style={{
           transform: `translate(${x}px, ${y}px)`,
