@@ -13,7 +13,7 @@ import {
   useStorage,
   useOthersMapped,
 } from "@/liveblocks.config"
-import { useCallback, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import {
   CanvasMode,
   CanvasState,
@@ -34,6 +34,7 @@ import { LiveObject } from "@liveblocks/client"
 import { LayerPreview } from "./layer-preview"
 import { SelectionBox } from "./selection-box"
 import { SelectionTools } from "./selection-tools"
+import { useDeleteLayers } from "@/hooks/use-delete-layers"
 
 const MAX_LAYERS = 100
 
@@ -43,6 +44,7 @@ interface CanvasProps {
 
 export const Canvas = ({ boardId }: CanvasProps) => {
   const layerIds = useStorage((root) => root.layerIds)
+  const deleteLayer = useDeleteLayers()
 
   const [canvasState, setCanvasState] = useState<CanvasState>({
     mode: CanvasMode.None,
@@ -54,6 +56,24 @@ export const Canvas = ({ boardId }: CanvasProps) => {
     g: 255,
     b: 255,
   })
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // Check if the pressed key is the delete key (keyCode 46) or backspace key (keyCode 8)
+      if (event.keyCode === 46 || event.keyCode === 8) {
+        // Perform your desired action here, for example, console log
+        deleteLayer()
+      }
+    }
+
+    // Add event listener to the document
+    document.addEventListener("keydown", handleKeyDown)
+
+    // Clean up by removing event listener when component unmounts
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown)
+    }
+  }, [deleteLayer]) // Empty dependency array to ensure this effect runs only once on component mount
 
   const history = useHistory()
   const canUndo = useCanUndo()
@@ -305,7 +325,7 @@ export const Canvas = ({ boardId }: CanvasProps) => {
           redo={history.redo}
         />
 
-        <SelectionTools camera={camera} setLastUsedColor={setLastUsedColor}  />
+        <SelectionTools camera={camera} setLastUsedColor={setLastUsedColor} />
 
         <svg
           onWheel={onWheel}
