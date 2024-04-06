@@ -1,50 +1,48 @@
-import { Liveblocks } from "@liveblocks/node"
+import { auth, currentUser } from "@clerk/nextjs";
+import { Liveblocks } from "@liveblocks/node";
+import { ConvexHttpClient } from "convex/browser";
 
-import { ConvexHttpClient } from "convex/browser"
-import { auth, currentUser } from "@clerk/nextjs"
-import { api } from "@/convex/_generated/api"
+import { api } from "@/convex/_generated/api";
 
-const convex = new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!)
+const convex = new ConvexHttpClient(
+  process.env.NEXT_PUBLIC_CONVEX_URL!
+);
 
 const liveblocks = new Liveblocks({
-  secret:
-    "sk_dev_gFdlWr5pJWpjTPjmNTgwz4xXcalqV-iKRtIK8cE_XPs_ty-sqnbci7Je-mnLWJaE",
-})
+  secret: process.env.LIVEBLOCKS_SECRET_KEY!,
+});
 
-export const POST = async (request: Request) => {
+export async function POST(request: Request) {
   // Auth Info:
-  const authorization = await auth()
-  const user = await currentUser()
+  const authorization = await auth();
+  const user = await currentUser();
 
   if (!authorization || !user) {
-    return new Response("Unauthorized"), { status: 403 }
+    return new Response("Unauthorized", { status: 403 });
   }
 
   // Room and Board Info:
-  const { room } = await request.json()
-
-  const board = await convex.query(api.board.get, {
-    id: room,
-  })
+  const { room } = await request.json();
+  const board = await convex.query(api.board.get, { id: room });
 
   if (board?.orgId !== authorization.orgId) {
-    return new Response("Unauthorized"), { status: 403 }
+    return new Response("Unauthorized", { status: 403 });
   }
-
   // UserInfo and Session:
   const userInfo = {
-    name: user?.firstName || "Teammate",
-    picture: user?.imageUrl,
-  }
+    name: user.firstName || "Teammeate",
+    picture: user.imageUrl,
+  };
 
-  const session = liveblocks.prepareSession(user.id, {
-    userInfo,
-  })
+  const session = liveblocks.prepareSession(
+    user.id,
+    { userInfo }
+  );
 
   if (room) {
-    session.allow(room, session.FULL_ACCESS)
+    session.allow(room, session.FULL_ACCESS);
   }
 
-  const { status, body } = await session.authorize()
-  return new Response(body, { status })
-}
+  const { status, body } = await session.authorize();
+  return new Response(body, { status });
+};

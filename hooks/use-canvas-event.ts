@@ -2,7 +2,7 @@ import { useHistory, useMutation } from "@/liveblocks.config"
 import { useCallback } from "react"
 import { useLayerMutation } from "./use-layer-mutation"
 import { useCanvasStore } from "@/store/use-canvas-store"
-import { CanvasMode, Side, XYWH } from "@/types/canvas"
+import { Camera, CanvasMode, Side, XYWH } from "@/types/canvas"
 import { pointerEventToCanvasPoint } from "@/lib/utils"
 
 export const useCanvasEvent = () => {
@@ -37,9 +37,9 @@ export const useCanvasEvent = () => {
 
   const onWheel = useCallback(
     (e: React.WheelEvent) => {
-      setCamera((prevCamera) => ({
-        x: prevCamera.x - e.deltaX,
-        y: prevCamera.y - e.deltaY,
+      setCamera((camera: any) => ({
+        x: camera.x - e.deltaX,
+        y: camera.y - e.deltaY,
       }))
     },
     [setCamera]

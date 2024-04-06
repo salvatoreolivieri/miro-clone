@@ -5,7 +5,7 @@ interface CanvasStore {
   canvasState: CanvasState
   setCanvasState: (e: CanvasState) => void
   camera: Camera
-  setCamera: (e: Camera) => void
+  setCamera: (e: any) => void
   lastUsedColor: Color
   setLastUsedColor: (e: Color) => void
 }
