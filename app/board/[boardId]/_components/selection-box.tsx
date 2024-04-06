@@ -61,6 +61,7 @@ export const SelectionBox = memo(
                 onResizeHandlePointerDown(Side.Top + Side.Left, bounds)
               }}
             />
+
             <rect
               className="fill-white stroke-1 stroke-blue-500"
               x={0}
@@ -81,6 +82,7 @@ export const SelectionBox = memo(
                 onResizeHandlePointerDown(Side.Top, bounds)
               }}
             />
+
             <rect
               className="fill-white stroke-1 stroke-blue-500"
               x={0}
